@@ -43,6 +43,7 @@ class Constants(BaseConstants):
     scientificAssessment_template  = xp_name + '/Scientific_Assessment.html'
     projection_template            = xp_name + '/projection.html'
     endPhase_template              = xp_name + '/endPhase.html'
+    adminHarvest_template          = xp_name + '/Harvest_Results.html'
 
     convertionCurrency    = 0.05
     anticipation          = 0.2
@@ -109,12 +110,8 @@ class Constants(BaseConstants):
 
 ##-------------------------------
 class Subsession(BaseSubsession):
-
    # def creating_session(self):
-
-
     def vars_for_admin_report(self):
-
         group =  self.get_groups()[0]
         ## color setting
         if self.session.config['treatment'] == 'T1':
@@ -133,15 +130,16 @@ class Subsession(BaseSubsession):
             colorBlim_range = 'rgba(213, 70, 150, 0.2)'
             colorBlim_range_label = 'gray'
 
-        # total harvest & total profit
-        totalProfit_round = []
-        totalCatch_round = []
-        for p in group.in_all_rounds():
-            totalCatch_round.append(p.total_catch)
-            totalProfit_round.append(p.total_profit)
+        catch    = [p.total_catch for p in group.in_all_rounds()]
+        profit   = [p.total_profit for p in group.in_all_rounds()]
+        biomass  = [p.b_round for p in group.in_all_rounds()]
+        blim_min = [p.Blim_min for p in group.in_all_rounds()]
+        blimmin  =  blim_min[1]
+        blim_max = [p.Blim_max for p in group.in_all_rounds()]
+        blimmax  =  blim_max[1]
 
-        data = {'Total_catch': totalCatch_round, 'Total_profit': totalProfit_round,
-                'Biomass': self.group.b_round,
+        data = {'Total_catch': catch, 'Total_profit': profit,
+                'Biomass': biomass,
                 'Bmsy': Constants.Bmsy,
                 'Blim': Constants.Blim,
                 'years': Constants.xp_years,
@@ -150,34 +148,37 @@ class Subsession(BaseSubsession):
                 'colorBlim_range_label': colorBlim_range_label,
                 'colorBlim_label': colorBlim_label
                 }
+
         seriesCatch=[]
-        seriesCatch.append({'name': 'Total Catch', 'data': totalCatch_round})
+        seriesCatch.append({'name': 'Total Catch', 'data': catch})
         Catchseries = safe_json(seriesCatch)
         seriesProfit = []
-        seriesProfit.append({'name': 'Total Profit', 'data': totalProfit_round})
+        seriesProfit.append({'name': 'Total Profit', 'data': profit})
         Profitseries = safe_json(seriesProfit)
+        seriesBiomass = []
+        seriesBiomass.append({'name': 'Biomass', 'data': biomass})
+        Biomassseries = safe_json(seriesBiomass)
+        seriesBlim_min = []
+        seriesBlim_min.append({'name': 'Blim_min', 'data': blim_min})
+        seriesBlim_min = safe_json(seriesBlim_min)
+        seriesBlim_max = []
+        seriesBlim_max.append({'name': 'Blim_max', 'data': blim_max})
+        seriesBlim_max = safe_json(seriesBlim_max)
 
         ##Biomass series
-        data['seriesBiomass'] = list()
         data['seriesBmsy'] = list()
         data['seriesBlim'] = list()
-        biomass = [p.b_round for p in group.in_all_rounds()]
-
-        data['seriesBiomass'].append({'name': 'Biomass', 'data': biomass})
-        data['seriesBiomass'] = safe_json(data['seriesBiomass'])
-        data['seriesBmsy'] = safe_json(data['seriesBmsy'])
-        data['seriesBlim'] = safe_json(data['seriesBlim'])
-        data['seriesBlim_min'] = safe_json(data['seriesBlim_min'])
-        data['seriesBlim_max'] = safe_json(data['seriesBlim_max'])
+        data['seriesBmsy'] = safe_json(data['Bmsy'])
+        data['seriesBlim'] = safe_json(data['Blim'])
 
         return {'data': data, 'Catchseries': Catchseries, 'Profitseries': Profitseries,
-                'payoff': self.participant.payoff,
-                'seriesBiomass': data['seriesBiomass'],
+                'seriesBiomass': Biomassseries,
+                'seriesBlim_min': seriesBlim_min , 'seriesBlim_max': seriesBlim_max,
                 'seriesBmsy': data['seriesBmsy'],
                 'seriesBlim': data['seriesBlim'],
-                'Biomass': self.group.b_round,
                 'Bmsy': Constants.Bmsy,
                 'Blim': Constants.Blim,
+                'Blim_min':blimmin, 'Blim_max':blimmax,
                 'years': Constants.xp_years,
                 'colorBlim': colorBlim,
                 'colorBlim_range': colorBlim_range,
