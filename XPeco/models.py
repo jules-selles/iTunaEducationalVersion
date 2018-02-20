@@ -107,7 +107,6 @@ class Constants(BaseConstants):
     c_test     = 9
     c_ind_test = c_test / players_per_group
 
-
 ##-------------------------------
 class Subsession(BaseSubsession):
    # def creating_session(self):
@@ -134,9 +133,9 @@ class Subsession(BaseSubsession):
         profit   = [p.total_profit for p in group.in_all_rounds()]
         biomass  = [p.b_round for p in group.in_all_rounds()]
         blim_min = [p.Blim_min for p in group.in_all_rounds()]
-        blimmin  =  blim_min[1]
+        blimmin  =  blim_min[0]
         blim_max = [p.Blim_max for p in group.in_all_rounds()]
-        blimmax  =  blim_max[1]
+        blimmax  =  blim_max[0]
 
         data = {'Total_catch': catch, 'Total_profit': profit,
                 'Biomass': biomass,
