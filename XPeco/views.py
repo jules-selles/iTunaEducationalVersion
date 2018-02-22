@@ -239,7 +239,6 @@ class Pledge_Results(Page):
                     'pledge': pledge_data[1], 'variation': var, 'j': j, 'r': r
                     }
 
-
 ##-------------------------------
 class Catch_Choice(Page):
     timeout_seconds = 60
@@ -399,10 +398,10 @@ class Catch_Results(Page):
             catch_round.append(p.catch_choice)
             profit_round.append(p.profit)
             predProfit_round.append(p.predProfit)
-            totalIndCatch  = round(sum(catch_round),1)
-            totalIndProfit = round(sum(profit_round),1)
-            IndHarvestEuros= round(sum(profit_round) * Constants.convertionCurrency, 1)
-            IndpredEuros   = round(sum(predProfit_round), 1)
+
+        totalIndCatch  = round(sum(catch_round),1)
+        totalIndProfit = round(sum(profit_round),1)
+        IndpredEuros   = round(sum(predProfit_round), 1)
 
         # others cacth & profit per player
         for p in self.player.get_others_in_group():
@@ -423,8 +422,8 @@ class Catch_Results(Page):
 
         # gather data to make series
         data = {'Player': self.player.id_in_group, 'Catch': catch_round,'Profit': profit_round,
-                'TotalIndCatch':totalIndCatch,'TotalIndProfit':totalIndProfit,'payoff':self.participant.payoff,
-                'Harvestpayoff':IndHarvestEuros,'Predpayoff': IndpredEuros,
+                'TotalIndCatch':totalIndCatch,'TotalIndProfit':totalIndProfit, 'payoff':self.participant.payoff,
+                'Predpayoff': IndpredEuros,
                 'Total_catch':  totalCatch_round, 'Total_profit':  totalProfit_round,
                 'Biomass': self.group.b_round,
                 'Bmsy': Constants.Bmsy,
@@ -540,7 +539,7 @@ class End(Page):
             p_round.append(p.profit)
             pred_round.append(p.predProfit)
             totC    = sum(c_round)
-            totP    = sum(p_round )
+            totP    = sum(p_round)
             totPred = sum(pred_round)
 
         euros = round(totP,1)

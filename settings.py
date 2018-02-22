@@ -77,7 +77,7 @@ AWS_SECRET_ACCESS_KEY = environ.get('AWS_SECRET_ACCESS_KEY')
 
 # e.g. EUR, CAD, GBP, CHF, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'euros'
-USE_POINTS = False
+USE_POINTS = True
 
 
 # e.g. en, de, fr, it, ja, zh-hans
@@ -135,11 +135,13 @@ SESSION_CONFIGS = [
         'display_name': "iTuna  Pedagogical Version",
         'num_demo_participants': 3,
         'real_world_currency_per_point': 0.05,
+        'belief_gain':2,
         'participation_fee': 0,
         'app_sequence': ['XPeco'],  # , 'survey', 'payment_info'],
         'treatment': 'T1',
         'doc': """
-         Edit the 'Treatment' parameter to change the threshold treatment to play.
+         Edit the 'Treatment' parameter to change the threshold treatment to play (T1, T2 or T3) and select the real
+         world currency and gain (in unit) for good belief elicitation.
          """
     }
 ]

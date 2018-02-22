@@ -45,10 +45,8 @@ class Constants(BaseConstants):
     endPhase_template              = xp_name + '/endPhase.html'
     adminHarvest_template          = xp_name + '/Harvest_Results.html'
 
-    convertionCurrency    = 0.05
     anticipation          = 0.2
     baseProfit            = 50
-    baseProfitEuros       = 50 * convertionCurrency
 
     ##-------------------------------
     ## oTree parameters
@@ -73,7 +71,7 @@ class Constants(BaseConstants):
     Bmsy              = carrying_capacity/2                 # MSY [10^4 t]
     Ymsy              = round((growth_rate * carrying_capacity)/4,0) # MSY [10^4 t]
     uncertainty       = 0.01 # resource level uncertainty epsilon []
-    max_uncertainty   = uncertainty + (0.05 * nb_sim_years)  # projection uncertainty
+    max_uncertainty   = uncertainty + (0.1 * nb_sim_years)  # projection uncertainty
     Blim              = 20  # Blim [10^3 t]
     Blim_uncertainty  = 0.4 #uncertainty range around Blim []
 
@@ -295,11 +293,14 @@ class Group(BaseGroup):
                 for p in self.get_players():
                     p.profit = round(self.compute_payoff(harvestInd=p.catch_choice,harvest=(self.total_catch-p.catch_choice),
                                                 stock=Constants.init_biomass),1) + Constants.baseProfit
+                    p.payoff = p.profit
             else:
 
                 for p in self.get_players():
                     p.profit = round(self.compute_payoff(harvestInd=p.catch_choice,harvest=(self.total_catch-p.catch_choice),
                                                    stock=self.b_round),1)
+                    p.payoff = p.profit
+
             self.total_profit = round(sum([p.profit for p in self.get_players()]),1)
             self.b_lim        = Constants.Blim
 
@@ -308,7 +309,8 @@ class Group(BaseGroup):
         for p in self.get_players():
             if self.b_round > 0:
                 if p.other_choice == self.total_catch - p.catch_choice:
-                    p.predProfit = p.predProfit + Constants.anticipation
+                    p.predProfit = p.predProfit  + self.session.config['belief_gain']
+                    p.payoff = p.payoff + p.predProfit
 
     ## update biomass for the next year
     def set_biomass(self):
@@ -382,15 +384,24 @@ class Group(BaseGroup):
         b_range = []
         b_unrange = []
         un = []
+        upperUn = []
+        lowerUn = []
         b_proj = self.projection()
 
         # uncertainty bounds around real projection
         for meanNorm in arange(Constants.uncertainty, Constants.max_uncertainty,
                                (Constants.max_uncertainty - Constants.uncertainty) / (len(Constants.sim_years))):
             un.append(numpy.random.normal(loc=round(meanNorm,3), scale=round(meanNorm,3) / 10))
+        for bp in numpy.asarray(b_proj[0:Constants.nb_sim_years]):
+            if bp > 0:
+                upperUn.append( numpy.round(bp + bp * numpy.asarray(un)[0:Constants.nb_sim_years],1))
+                lowerUn.append( numpy.round(bp - bp * numpy.asarray(un)[0:Constants.nb_sim_years],1))
+            else:
+                upperUn.append(numpy.round(1 + 1 * numpy.asarray(un)[0:Constants.nb_sim_years], 1))
+                lowerUn.append(0)
 
-        upperUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) * (1 + numpy.asarray(un)[0:Constants.nb_sim_years]),1)
-        lowerUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) * (1 - numpy.asarray(un)[0:Constants.nb_sim_years]),1)
+        #upperUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) + numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
+        #lowerUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) - numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
         range = numpy.vstack((upperUn, lowerUn)).T
         unrange.append(range.tolist())
         b_unrange.append(unrange)
