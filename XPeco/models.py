@@ -392,16 +392,9 @@ class Group(BaseGroup):
         for meanNorm in arange(Constants.uncertainty, Constants.max_uncertainty,
                                (Constants.max_uncertainty - Constants.uncertainty) / (len(Constants.sim_years))):
             un.append(numpy.random.normal(loc=round(meanNorm,3), scale=round(meanNorm,3) / 10))
-        for bp in numpy.asarray(b_proj[0:Constants.nb_sim_years]):
-            if bp > 0:
-                upperUn.append( numpy.round(bp + bp * numpy.asarray(un)[0:Constants.nb_sim_years],1))
-                lowerUn.append( numpy.round(bp - bp * numpy.asarray(un)[0:Constants.nb_sim_years],1))
-            else:
-                upperUn.append(numpy.round(1 + 1 * numpy.asarray(un)[0:Constants.nb_sim_years], 1))
-                lowerUn.append(0)
 
-        #upperUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) + numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
-        #lowerUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) - numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
+        upperUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) + numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
+        lowerUn = numpy.round(numpy.asarray(b_proj[0:Constants.nb_sim_years]) - numpy.asarray(b_proj[0:Constants.nb_sim_years]) * numpy.asarray(un)[0:Constants.nb_sim_years],1)
         range = numpy.vstack((upperUn, lowerUn)).T
         unrange.append(range.tolist())
         b_unrange.append(unrange)
