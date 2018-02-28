@@ -132,7 +132,7 @@ SESSION_CONFIG_DEFAULTS = {
 SESSION_CONFIGS = [
     {
         'name': 'Pedagogical_version',
-        'display_name': "iTuna  Pedagogical Version",
+        'display_name': "Tragedy of the commons – International fisheries – The threat of a catastrophe can turn the tragedy into a success?",
         'num_demo_participants': 3,
         'real_world_currency_per_point': 0.05,
         'belief_gain':2,
@@ -140,9 +140,22 @@ SESSION_CONFIGS = [
         'app_sequence': ['XPeco'],  # , 'survey', 'payment_info'],
         'treatment': 'T1',
         'doc': """
-         Edit the 'Treatment' parameter to change the threshold treatment to play (T1, T2 or T3) and select the real
-         world currency and gain (in unit) for good belief elicitation.
-         """
+        International fisheries are common pool resources which concentrate management difficulty. A special emphasis on the case of the Atlantic and Mediterranean bluefin tuna fishery is given; this stock being considered as the archetype of an overfished and mismanaged fishery. The drastic management shift of this fishery face to the threat of international trade ban has demonstrated the role of public awareness and the importance of the interactions between science and management of scientific uncertainties. 
+        This classroom experiment simulates the exploitation of a common pool resource and highlights the theoretical outcome of the tragedy of the commons if participants are not able to take full advantage of the pledging process to communicate and to coordinate their harvest strategy. 
+        Scenarios involving a threat of a shift in the economic conditions of the game (the catastrophe), which change substantially the outcomes of the game from a tragedy of the commons type to a higher level of cooperation between harvesters. 
+       	<br />
+    	<br />
+        Selles, J., Bonhommeau, S., Guillotreau, P., & Vallee, T. (2018). Influence of Tipping Points in the Success of International Fisheries Management: An Experimental Approach.
+        <i>ICES Journal of Marine Science (in Press)</i>.
+        <br />
+    	<br />
+        There are 3 different treatments: No Tipping Point (T0) / Known Tipping Point (T1) / uncertain (localized) tipping point (T2).
+        You can choose the variant when creating the game, and also via the administration interface, inside the game.
+        You can also modify the exchange rate between units and real world currency and select a gain (in real world currency) for good belief elicitation.
+        <br />
+    	<br />
+        Note that a single simulation is constitutes by 20 rounds and last around 10 minutes.
+        """
     }
 ]
 
