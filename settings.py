@@ -145,8 +145,8 @@ SESSION_CONFIGS = [
         Scenarios involving a threat of a shift in the economic conditions of the game (the catastrophe), which change substantially the outcomes of the game from a tragedy of the commons type to a higher level of cooperation between harvesters. 
        	<br />
     	<br />
-        Selles, J., Bonhommeau, S., Guillotreau, P., & Vallee, T. (2018). Influence of Tipping Points in the Success of International Fisheries Management: An Experimental Approach.
-        <i>ICES Journal of Marine Science (in Press)</i>.
+        <p><a href="https://hal.archives-ouvertes.fr/hal-01719101">Selles, J., Bonhommeau, S., Guillotreau, P., & Vallee, T. (2018). Influence of Tipping Points in the Success of International Fisheries Management: An Experimental Approach.
+        <i>ICES Journal of Marine Science (in Press)</i>.</a></p>
         <br />
     	<br />
         There are 3 different treatments: No Tipping Point (T0) / Known Tipping Point (T1) / uncertain (localized) tipping point (T2).
@@ -154,7 +154,7 @@ SESSION_CONFIGS = [
         You can also modify the exchange rate between units and real world currency and select a gain (in real world currency) for good belief elicitation.
         <br />
     	<br />
-        Note that a single simulation is constitutes by 20 rounds and last around 10 minutes.
+        Note that a single simulation is constituted by 20 rounds and last around 10 minutes.
         """
     }
 ]
